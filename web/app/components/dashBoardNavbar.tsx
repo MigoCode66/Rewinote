@@ -15,7 +15,7 @@ const DashBoardNavbar = () => {
       notes: {
         ...notes.notes,
         [id]: {
-          title: 'New Notebook',
+          title: 'New note',
           content: null,
         },
       },
