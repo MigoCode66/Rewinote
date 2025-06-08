@@ -19,14 +19,14 @@ const NoteInput = () => {
       <input
         type="text"
         placeholder="New note"
-        className="text-[40px] placeholder:text-[#D9D9D9] outline-none mt-[125px] ml-[9vw]"
+        className="text-[2.5rem] placeholder:text-[#D9D9D9] outline-none mt-[125px] ml-[9vw]"
       />
       <textarea
         onInput={adjustHeight}
         ref={textbox}
         name=""
         id=""
-        className="w-[100%] pl-[9vw] pr-[9vw] pt-[30px] outline-none text-[18px] resize-none"
+        className="w-[100%] pl-[9vw] pr-[9vw] pt-[30px] outline-none text-[1rem] resize-none leading-[150%] tracking-normal"
       ></textarea>
       <div className="h-[250px] w-full"></div>
     </div>

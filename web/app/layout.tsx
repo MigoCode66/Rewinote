@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import NoteContextProvider from './lib/noteContext';
 
 const inter = Inter({
   variable: '--font-geist-sans',
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}  antialiased`}>{children}</body>
+      <body className={`${inter.variable}  antialiased`}>
+        <NoteContextProvider>{children}</NoteContextProvider>
+      </body>
     </html>
   );
 }
