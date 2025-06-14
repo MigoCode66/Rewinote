@@ -1,41 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
-import { createUser } from './registerActions';
-import { auth } from '../firebase/config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Link from 'next/link';
+import React, { useState } from 'react';
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { auth } from '../firebase/config';
+import { setCookies } from '../setCookies';
 
-const RegisterPage = () => {
+const LoginPage = () => {
   interface formDataTypes {
     email: string;
     password: string;
-    name: string;
-    surname: string;
   }
   const [formData, setFormData] = useState<formDataTypes>({
     email: '',
     password: '',
-    name: '',
-    surname: '',
   });
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     (async () => {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      createUser(
-        formData.name,
-        formData.surname,
-        formData.email,
-        formData.password,
-        user.user.uid
-      );
+      try {
+        const user = await signInWithEmailAndPassword(
+          auth,
+          formData.email,
+          formData.password
+        );
+        await setCookies(user.user.uid);
+      } catch (err) {
+        console.error(err);
+      }
     })();
   };
+
   return (
     <div className="flex items-center justify-center">
       <form
@@ -44,39 +45,12 @@ const RegisterPage = () => {
       >
         <div className="flex flex-col gap-[8px] items-center ">
           <p>Rewinote</p>
-          <h1 className="text-[24px]">Sing Up Account</h1>
+          <h1 className="text-[24px]">Log in in to Account</h1>
           <p className="text-[#979797]">
             Enter your personal data to create your acount
           </p>
         </div>
 
-        <div
-          className="flex 
-         gap-[22px] "
-        >
-          <div className="flex flex-col gap-[8px]">
-            <label htmlFor="">First Name</label>
-            <input
-              onChange={(e) => {
-                setFormData({ ...formData, name: e.target.value });
-              }}
-              type="text"
-              className="w-[155px] h-[40px] placeholder:text-[#979797] outline-none rounded-[8px] bg-[#EEEEEE] pl-[20px] pr-[20px]"
-              placeholder="eg. John"
-            />
-          </div>
-          <div className="flex flex-col gap-[8px] ">
-            <label htmlFor="">Surname</label>
-            <input
-              onChange={(e) => {
-                setFormData({ ...formData, surname: e.target.value });
-              }}
-              type="text"
-              className="w-[155px] h-[40px] placeholder:text-[#979797] outline-none rounded-[8px] bg-[#EEEEEE] pl-[20px] pr-[20px]"
-              placeholder="eg. Francisco"
-            />
-          </div>
-        </div>
         <div className="flex flex-col gap-[8px] w-[100%]">
           <label htmlFor="">Email</label>
           <input
@@ -103,17 +77,17 @@ const RegisterPage = () => {
           </p>
         </div>
         <button className="p-[10px] bg-black text-[#ffffff] rounded-[8px] w-[100%] cursor-pointer">
-          Sign Up
+          Log in
         </button>
         <Link
-          href={'/login'}
+          href={'/register'}
           className="text-[0.8rem] text-[#979797] flex gap-[0.3rem] cursor-pointer"
         >
-          Already have an account? <b className="text-[#000000]">Log in</b>
+          You do not have an account? <b className="text-[#000000]">Register</b>
         </Link>
       </form>
     </div>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
