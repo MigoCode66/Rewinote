@@ -3,10 +3,12 @@
 import { PlusIcon } from 'lucide-react';
 import React, { useContext } from 'react';
 import { noteContext } from '../lib/noteContext';
+import { userDataContext } from '../lib/userDataContext';
 
 const DashBoardNavbar = () => {
   const [notes, setNotes] = useContext(noteContext);
-
+  const userDataContextValue = useContext(userDataContext);
+  const [userData, setUserData] = userDataContextValue ?? [null, () => {}];
   const noteAddCickHandler = (e: React.MouseEvent<HTMLLIElement>) => {
     const date = new Date();
     const id = date.getTime() + Math.random().toString();
@@ -32,7 +34,9 @@ const DashBoardNavbar = () => {
       {/* User */}
       <div className="flex items-center gap-[20px]">
         <div className="w-[36px] h-[36px] bg-[#CCCCCC] rounded-[8px] "></div>
-        <p>Juliusz Błoński</p>
+        <p>
+          {userData?.name} {userData?.surname}
+        </p>
       </div>
       {/* Note list */}
       <ul className="flex flex-col gap-[10px]">

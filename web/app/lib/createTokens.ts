@@ -7,8 +7,7 @@ export async function createTokens(uid: string) {
   cookieStore.set('userID', uid, { httpOnly: true });
 
   const userData = await getUserData();
-  const accesToken = userData.accesToken;
-  if (accesToken) {
-    cookieStore.set('accesToken', accesToken);
+  if ('accesToken' in userData && userData.accesToken) {
+    cookieStore.set('accesToken', userData.accesToken);
   }
 }
