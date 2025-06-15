@@ -2,16 +2,9 @@
 
 import Link from 'next/link';
 import React, { useState } from 'react';
-import {
-  getAuth,
-  setPersistence,
-  browserLocalPersistence,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/config';
-import { setCookies } from '../setCookies';
-
+import { createTokens } from '../lib/createTokens';
 const LoginPage = () => {
   interface formDataTypes {
     email: string;
@@ -30,7 +23,7 @@ const LoginPage = () => {
           formData.email,
           formData.password
         );
-        await setCookies(user.user.uid);
+        await createTokens(user.user.uid);
       } catch (err) {
         console.error(err);
       }

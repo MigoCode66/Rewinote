@@ -1,12 +1,9 @@
 'use server';
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase/config';
-import { onAuthStateChanged } from 'firebase/auth';
 import { setDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../firebase/config';
-import { cookies } from 'next/headers';
-
+import crypto from 'crypto';
+import { createTokens } from '../lib/createTokens';
 export async function createUser(
   name: string,
   surname: string,
@@ -15,8 +12,11 @@ export async function createUser(
   uid: string
 ) {
   try {
-    const cookieStore = await cookies();
-    
+    const accesToken = crypto
+      .createHash('sha256')
+      .update(uid + Math.random().toString())
+      .digest('base64');
+
     const docRef = doc(db, 'users', uid);
     await setDoc(docRef, {
       name: name,
@@ -24,8 +24,9 @@ export async function createUser(
       email: email,
       password: password,
       admin: false,
+      accesToken: accesToken,
     });
-    cookieStore.set('userID', uid);
+    await createTokens(uid);
   } catch (err) {
     console.error(err);
   }

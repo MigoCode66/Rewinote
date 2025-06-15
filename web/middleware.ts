@@ -5,6 +5,7 @@ import { NextRequest } from 'next/server';
 export async function middleware(req: NextRequest) {
   const cookieStore = await cookies();
   const id = cookieStore.get('userID');
+  const accesToken = cookieStore.get('accesToken');
 
   if (!id) {
     if (req.nextUrl.pathname === '/dashboard') {
