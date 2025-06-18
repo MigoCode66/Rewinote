@@ -9,19 +9,31 @@ function SaveNotes() {
   const [notes, setNotes] = useContext(noteContext);
   const userDataContextValue = useContext(userDataContext);
   const [userData, setUserData] = userDataContextValue ?? [null, () => {}];
-  const [save, setSave] = useState<boolean | 'error'>(false);
+  const [save, setSave] = useState<boolean | 'error' | 'notLoded' | 'loding'>(
+    'notLoded'
+  );
+  console.log(notes);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   useEffect(() => {
-    if (save) {
+    if (save === 'notLoded') {
+      setSave('loding');
+      return;
+    }
+    if (save === 'loding') {
+      setSave(false);
+      return;
+    }
+    if (save === true) {
       clearTimeout(timeoutRef.current);
       console.log('Interval saved');
     }
     timeoutRef.current = setTimeout(() => {
       try {
         (async () => {
+          console.log(userData);
           if (!userData?.accesToken) throw new Error('No access token');
-          const docRef = doc(db, 'Notes', userData.accesToken);
-          await setDoc(docRef, notes.notes);
+          const docRef = doc(db, 'Notes', userData.accesToken.replace('/', ''));
+          await setDoc(docRef, notes);
         })();
       } catch (err) {
         console.error(err);
@@ -35,7 +47,7 @@ function SaveNotes() {
   return (
     <div className="absolute bottom-[10px] right-[10px]">
       <p>
-        {save === false ? 'Notes Saved' : null}
+        {save === false || save === 'notLoded' ? 'Notes Saved' : null}
         {save === 'error' ? 'Can not save the notes' : null}
       </p>
     </div>

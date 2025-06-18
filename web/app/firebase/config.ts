@@ -1,7 +1,5 @@
-'use client';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -10,20 +8,18 @@ import { getFirestore } from 'firebase/firestore';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Initialize Firebase configuration
-const firebaseConfig = process.env.FIREBASE_CONFIG
-  ? JSON.parse(process.env.FIREBASE_CONFIG)
-  : {
-      apiKey: process.env.FIREBASE_API_KEY,
-      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.FIREBASE_APP_ID,
-      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-    };
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBh11hSTdPqBlViqOhfu0UM10groohx0dg',
+  authDomain: 'rewinote-33b24.firebaseapp.com',
+  projectId: 'rewinote-33b24',
+  storageBucket: 'rewinote-33b24.firebasestorage.app',
+  messagingSenderId: '1071025075100',
+  appId: '1:1071025075100:web:fff74e970b50173bbc0e59',
+  measurementId: 'G-17C8QR501P',
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

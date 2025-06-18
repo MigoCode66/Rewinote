@@ -28,6 +28,7 @@ const UserDataContextProvider = ({
   useEffect(() => {
     (async () => {
       const dbUserData = await getUserData();
+      console.log(dbUserData);
       if (dbUserData && !('error' in dbUserData)) {
         setUserData(dbUserData);
       }

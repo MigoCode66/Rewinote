@@ -6,11 +6,13 @@ import {
   SetStateAction,
   Dispatch,
   useState,
+  useEffect,
 } from 'react';
+import getUserNotes from './getUserNotes';
 
 export interface note {
-    title: string | null;
-    content: string | null;
+  title: string | null;
+  content: string | null;
 }
 
 export interface notesState {
@@ -35,7 +37,15 @@ const NoteContextProvider = ({ children }: { children: ReactNode }) => {
     current: null,
     notes: {},
   });
-
+  useEffect(() => {
+    (async () => {
+      const dbUserData = await getUserNotes();
+      console.log(dbUserData);
+      if (dbUserData && !('error' in dbUserData)) {
+        setNote(dbUserData as unknown as SetStateAction<notesState>);
+      }
+    })();
+  }, []);
   return (
     <noteContext.Provider value={[note, setNote]}>
       {children}
