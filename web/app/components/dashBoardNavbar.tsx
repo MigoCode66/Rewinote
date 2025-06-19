@@ -1,17 +1,29 @@
 'use client';
 
 import { PlusIcon } from 'lucide-react';
-import React, { useContext } from 'react';
+import React, { SetStateAction, useContext } from 'react';
 import { noteContext } from '../lib/noteContext';
 import { userDataContext } from '../lib/userDataContext';
 
-const DashBoardNavbar = () => {
+const DashBoardNavbar = ({
+  Display,
+}: {
+  Display: [
+    'Notes' | 'Rewiew',
+    React.Dispatch<SetStateAction<'Notes' | 'Rewiew'>>
+  ];
+}) => {
+  // Hooks
   const [notes, setNotes] = useContext(noteContext);
   const userDataContextValue = useContext(userDataContext);
   const [userData, setUserData] = userDataContextValue ?? [null, () => {}];
+  const [display, setDisplay] = Display;
+  //
+
   const noteAddCickHandler = (e: React.MouseEvent<HTMLLIElement>) => {
     const date = new Date();
     const id = date.getTime() + Math.random().toString();
+    setDisplay('Notes');
     setNotes({
       current: id,
       notes: {
@@ -23,26 +35,44 @@ const DashBoardNavbar = () => {
       },
     });
   };
+
   const noteCickHandler = (e: React.MouseEvent<HTMLLIElement>) => {
     setNotes({
       current: (e.target as HTMLElement).id,
       notes: { ...notes.notes },
     });
+    setDisplay('Notes');
   };
+
   return (
-    <nav className="w-[270px] h-screen bg-[#F8F8F7] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] sticky top-0 flex flex-col p-[25px] gap-[40px]">
+    <nav className="w-[270px] h-screen bg-[#F8F8F7] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] sticky top-0 flex flex-col p-[25px] gap-[20px] items-start">
       {/* User */}
+
       <div className="flex items-center gap-[20px]">
         <div className="w-[36px] h-[36px] bg-[#CCCCCC] rounded-[8px] "></div>
         <p>
           {userData?.name} {userData?.surname}
         </p>
       </div>
+
+      {/* Rewiew Button */}
+
+      <button
+        className="pl-[20px] pr-[20px] h-[30px] bg-[#979797] text-[#ffffff] rounded-[8px] cursor-pointer hover:bg-[#7e7e7e] transition-colors"
+        onClick={() => {
+          setDisplay('Rewiew');
+        }}
+      >
+        Rewiew Notes
+      </button>
+
       {/* Note list */}
-      <ul className="flex flex-col gap-[10px]">
+
+      <ul className="flex flex-col gap-[10px] w-full">
         {/* Title */}
+
         <li
-          className="flex items-center justify-between hover:[&_.icon]:opacity-100 cursor-pointer "
+          className="flex items-center justify-between hover:[&_.icon]:opacity-100 cursor-pointer"
           onClick={noteAddCickHandler}
         >
           <p className="text-[#B7B7B7] text-[0.9rem]">Notes</p>
@@ -51,9 +81,10 @@ const DashBoardNavbar = () => {
             color="#B7B7B7"
           />
         </li>
+
         {/* Note */}
+
         {Object.entries(notes.notes).map((obj, key) => {
-          console.log(obj);
           return (
             <li
               className={`${

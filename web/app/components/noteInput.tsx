@@ -11,13 +11,22 @@ const NoteInput = () => {
   const textbox = useRef<HTMLTextAreaElement>(null);
   const titeInput = useRef<HTMLInputElement>(null);
   const [notes, setNotes] = useContext(noteContext);
+  const scrollPositionRef = useRef(0);
 
-  function adjustHeight() {
-    if (textbox.current !== null) {
-      textbox.current.style.height = 'auto';
-      textbox.current.style.height = `${textbox.current.scrollHeight}px`;
+  const adjustHeight = () => {
+    const textarea = textbox.current;
+    if (textarea) {
+      // Store current scroll position
+      scrollPositionRef.current = window.scrollY;
+
+      // Adjust height
+      textarea.style.height = '0';
+      textarea.style.height = textarea.scrollHeight + 'px';
+
+      // Restore scroll position
+      window.scrollTo(0, scrollPositionRef.current);
     }
-  }
+  };
   useEffect(() => {
     if (textbox.current) {
       // Use setTimeout to ensure DOM has updated
@@ -95,6 +104,7 @@ const NoteInput = () => {
         name=""
         id=""
         className="w-[100%] pl-[9vw] pr-[9vw] pt-[30px] outline-none text-[1rem] resize-none leading-[150%] tracking-normal"
+        placeholder="Type your notes heare"
       ></textarea>
       <div className="h-[250px] w-full"></div>
     </div>
