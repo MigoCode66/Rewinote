@@ -45,11 +45,13 @@ function SaveNotes() {
   }, [notes]);
 
   return (
-    <div className="absolute bottom-[10px] right-[10px]">
-      <p>
-        {save === false || save === 'notLoded' ? 'Notes Saved' : null}
-        {save === 'error' ? 'Can not save the notes' : null}
-      </p>
+    <div className="sticky top-[0px] h-screen">
+      <div className="absolute bottom-[10px] right-[10px]">
+        <p className="text-nowrap">
+          {save === false || save === 'notLoded' ? 'Notes Saved' : null}
+          {save === 'error' ? 'Can not save the notes' : null}
+        </p>
+      </div>
     </div>
   );
 }

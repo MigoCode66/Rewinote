@@ -18,11 +18,12 @@ const NoteInput = () => {
       textbox.current.style.height = `${textbox.current.scrollHeight}px`;
     }
   }
-
   useEffect(() => {
-    adjustHeight();
-    addEventListener('resize', adjustHeight);
-  }, []);
+    if (textbox.current) {
+      // Use setTimeout to ensure DOM has updated
+      setTimeout(adjustHeight, 0);
+    }
+  }, [notes.current, notes.notes]);
 
   useEffect(() => {
     if (
@@ -88,8 +89,8 @@ const NoteInput = () => {
         ref={titeInput}
       />
       <textarea
-        onInput={adjustHeight}
-        onChange={onTextAreaChange}
+        onChange={adjustHeight}
+        onInput={onTextAreaChange}
         ref={textbox}
         name=""
         id=""
