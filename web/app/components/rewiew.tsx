@@ -1,10 +1,27 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { noteContext } from '../lib/noteContext';
 
 const Rewiew = () => {
   const [notes, setNotes] = useContext(noteContext);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const onSelect = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+    if (buttonRef.current) {
+      if (selectRef.current?.value !== 'none') {
+        buttonRef.current.style.opacity = '1';
+        buttonRef.current.style.cursor = 'pointer';
+        buttonRef.current.disabled = true
+      } else {
+        buttonRef.current.style.opacity = '.7';
+        buttonRef.current.style.cursor = '';
+        buttonRef.current.disabled = false
+      }
+    }
+  };
+
   return (
     <div className="w-[calc(100vw-270px)] h-screen flex flex-col gap-[20px]">
       <h1 className="text-[2.5rem] placeholder:text-[#D9D9D9] mt-[125px] ml-[9vw]">
@@ -18,17 +35,26 @@ const Rewiew = () => {
           Select Note
         </p>
         <select
+          onChange={onSelect}
+          ref={selectRef}
           name="notes"
           id=""
           className="ml-[9vw] mr-[9vw] w-[220px] pr-[20px] pl-[20px] h-[40px] bg-[#EEEEEE] outline-none rounded-[8px]"
         >
           <option value="none">None note selected</option>
           {Object.entries(notes.notes).map((obj, key) => {
-            return <option value={obj[0]}>{obj[1].title}</option>;
+            return (
+              <option key={key} value={obj[0]}>
+                {obj[1].title}
+              </option>
+            );
           })}
         </select>
       </div>
-      <button className="ml-[9vw] mr-[9vw] w-[220px] pr-[20px] pl-[20px] h-[40px] bg-[#EEEEEE] outline-none rounded-[8px] cursor-pointer">
+      <button
+        className="ml-[9vw] mr-[9vw] w-[220px] pr-[20px] pl-[20px] h-[40px] bg-[#EEEEEE] outline-none rounded-[8px]  opacity-70 "
+        ref={buttonRef}
+      >
         Start rewiew
       </button>
     </div>

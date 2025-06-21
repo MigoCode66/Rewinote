@@ -61,6 +61,10 @@ const DashBoardNavbar = ({
         className="pl-[20px] pr-[20px] h-[30px] bg-[#979797] text-[#ffffff] rounded-[8px] cursor-pointer hover:bg-[#7e7e7e] transition-colors"
         onClick={() => {
           setDisplay('Rewiew');
+          setNotes({
+            current: null,
+            notes: { ...notes.notes },
+          });
         }}
       >
         Rewiew Notes
