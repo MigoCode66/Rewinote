@@ -75,6 +75,16 @@ const NoteInput = () => {
   };
 
   const onTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (notes.current) {
+      if (
+        (e.target as HTMLTextAreaElement).value.includes('<') ||
+        (e.target as HTMLTextAreaElement).value.includes('>')
+      ) {
+        (e.target as HTMLTextAreaElement).value = notes.notes[notes.current]
+          .content as string;
+        return;
+      }
+    }
     const newNoteObj = Object.fromEntries(
       Object.entries(notes.notes).map(([Key, value]) =>
         Key === notes.current
@@ -87,7 +97,7 @@ const NoteInput = () => {
     );
     setNotes({ current: notes.current, notes: { ...newNoteObj } });
   };
-
+  console.log(notes);
   return (
     <div className="w-[calc(100vw-270px)] min-h-screen">
       <input
