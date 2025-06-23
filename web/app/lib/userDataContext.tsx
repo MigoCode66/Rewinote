@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import getUserData from './getUserData';
 
 export interface userDataType {
-  accesToken: string;
+  uid: string;
   admin: boolean;
   email: string;
   name: string;

@@ -2,8 +2,8 @@
 
 import { setDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../firebase/config';
-import crypto from 'crypto';
-import { createTokens } from '../lib/createTokens';
+import { createTokens } from '../lib/cookies';
+import { redirect } from 'next/navigation';
 export async function createUser(
   name: string,
   surname: string,
@@ -12,11 +12,6 @@ export async function createUser(
   uid: string
 ) {
   try {
-    const accesToken = crypto
-      .createHash('sha256')
-      .update(uid + Math.random().toString())
-      .digest('base64');
-
     const docRef = doc(db, 'users', uid);
     await setDoc(docRef, {
       name: name,
@@ -24,9 +19,10 @@ export async function createUser(
       email: email,
       password: password,
       admin: false,
-      accesToken: accesToken,
+      uid: uid,
     });
     await createTokens(uid);
+    redirect('/dashboard');
   } catch (err) {
     console.error(err);
   }

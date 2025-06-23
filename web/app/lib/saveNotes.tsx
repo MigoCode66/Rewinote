@@ -30,9 +30,8 @@ function SaveNotes() {
     timeoutRef.current = setTimeout(() => {
       try {
         (async () => {
-          console.log(userData);
-          if (!userData?.accesToken) throw new Error('No access token');
-          const docRef = doc(db, 'Notes', userData.accesToken.replace('/', ''));
+          if (!userData) throw new Error('No user data');
+          const docRef = doc(db, 'Notes', userData.uid);
           await setDoc(docRef, notes);
         })();
       } catch (err) {
@@ -40,7 +39,7 @@ function SaveNotes() {
         setSave('error');
       }
       setSave(false);
-    }, 3000);
+    }, 1500);
     setSave(true);
   }, [notes]);
 

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/config';
-import { createTokens } from '../lib/createTokens';
+import { useRouter } from 'next/navigation';
 const LoginPage = () => {
   interface formDataTypes {
     email: string;
@@ -14,6 +14,7 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  const router = useRouter();
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     (async () => {
@@ -23,7 +24,7 @@ const LoginPage = () => {
           formData.email,
           formData.password
         );
-        await createTokens(user.user.uid);
+        router.push('/dashboard');
       } catch (err) {
         console.error(err);
       }

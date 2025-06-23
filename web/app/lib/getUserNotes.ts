@@ -1,22 +1,20 @@
-'use server';
+'use client';
 
 import { doc, getDoc } from 'firebase/firestore';
-import { cookies } from 'next/headers';
+import { getCookies } from './cookies';
 import { db } from '../firebase/config';
 import { cache } from 'react';
 import { userDataType } from './userDataContext';
 import { verify } from './verify';
-import { note } from './noteContext';
 
 async function getUserNotes() {
   try {
     await verify();
-    const cookieStore = await cookies();
-    const userAcessTokenCookie = cookieStore.get('accesToken');
-    if (!userAcessTokenCookie) {
+    const userIdCookie = await getCookies('userID');
+    if (!userIdCookie) {
       throw new Error('User ID cookie not found');
     }
-    const docRef = doc(db, 'Notes', userAcessTokenCookie.value);
+    const docRef = doc(db, 'Notes', userIdCookie.value);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const docData = docSnap.data() as userDataType;
