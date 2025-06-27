@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import RewiewSelect from './rewiewSelect';
 import ReadReview from './readRewiew';
+import Questions from './questions';
 
 const Rewiew = () => {
   const [display, setDisplay] = useState<
@@ -17,7 +18,7 @@ const Rewiew = () => {
     case 'readNotes':
       return <ReadReview Display={[display, setDisplay]} />;
     case 'anserQuestions':
-      return <div className="">anserQuestions</div>;
+      return <Questions />;
   }
 };
 
