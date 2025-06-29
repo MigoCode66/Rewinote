@@ -40,7 +40,7 @@ const NoteContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     (async () => {
       const dbUserData = await getUserNotes();
-      console.log(dbUserData);
+  
       if (dbUserData && !('error' in dbUserData)) {
         setNote(dbUserData as unknown as SetStateAction<notesState>);
       }

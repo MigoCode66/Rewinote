@@ -97,7 +97,6 @@ const NoteInput = () => {
     );
     setNotes({ current: notes.current, notes: { ...newNoteObj } });
   };
-  console.log(notes);
   return (
     <div className="w-[calc(100vw-270px)] min-h-screen">
       <input

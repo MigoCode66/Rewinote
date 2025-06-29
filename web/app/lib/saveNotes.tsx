@@ -12,7 +12,6 @@ function SaveNotes() {
   const [save, setSave] = useState<boolean | 'error' | 'notLoded' | 'loding'>(
     'notLoded'
   );
-  console.log(notes);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   useEffect(() => {
     if (save === 'notLoded') {

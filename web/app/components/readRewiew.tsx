@@ -37,7 +37,7 @@ const ReadReview = ({
   };
   return (
     <div className="w-[calc(100vw-270px)]  flex flex-col gap-[20px]">
-      <h1 className="text-[2.5rem] placeholder:text-[#D9D9D9] mt-[125px] ml-[9vw]">
+      <h1 className="text-[2.5rem]  mt-[125px] ml-[9vw]">
         Firstly read your note
       </h1>
       <p className="pl-[9vw] pr-[9vw] text-[1.1rem] leading-[150%]">

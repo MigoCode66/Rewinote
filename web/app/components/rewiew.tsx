@@ -18,7 +18,7 @@ const Rewiew = () => {
     case 'readNotes':
       return <ReadReview Display={[display, setDisplay]} />;
     case 'anserQuestions':
-      return <Questions />;
+      return <Questions Display={[display, setDisplay]} />;
   }
 };
 

@@ -20,6 +20,7 @@ export const createResponse = async (note: string) => {
         * Hard question should look like this: "Compare and contrast the main ideas presented in the note with another concept or theory."
         * The response should be concise and to the point, but also provide enough detail to be helpful.
         * if User use different language, you should use the same language in your response.
+        * Retured data should be not have "According to the note" kyword.
         # Response Format
         * shuld be in form of json object and shuld look like this:
         [{question: "What is the main idea of the note?", answer: "The main idea of the note is ..."},{question: "What is the main idea of the note?", answer: "The main idea of the note is ..."}]
