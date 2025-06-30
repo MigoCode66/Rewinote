@@ -49,7 +49,6 @@ const DashBoardNavbar = ({
       {/* User */}
 
       <div className="flex items-center gap-[20px]">
-        <div className="w-[36px] h-[36px] bg-[#CCCCCC] rounded-[8px] "></div>
         <p>
           {userData?.name} {userData?.surname}
         </p>

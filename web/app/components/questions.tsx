@@ -3,6 +3,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createResponse } from '../lib/openai';
 import { noteContext } from '../lib/noteContext';
+import { userDataContext } from '../lib/userDataContext';
+import { updateUserData } from '../lib/updateUser';
 
 const Questions = ({
   Display,
@@ -19,16 +21,37 @@ const Questions = ({
   const [note, setNote] = useContext(noteContext);
   const [currentQuestion, setCurrentQuestion] = useState<number[]>([0, 0]);
   const [hasFetched, setHasFetched] = useState(false);
+  const userDataContextValue = useContext(userDataContext);
+  const [userData, setUserData] = userDataContextValue ?? [null, () => {}];
   useEffect(() => {
     if (hasFetched) return;
     (async () => {
-      const questions = await createResponse(
+      const response = await createResponse(
         note.current !== null && note.current !== undefined
           ? note.notes[note.current]?.content || ''
           : ''
       );
-      setQuestion(JSON.parse(questions) || []);
+      const [questions, tokens] = response ?? ['', 0];
+      setQuestion(JSON.parse(questions as string) || []);
       setHasFetched(true);
+      console.log(tokens);
+      console.log(userData);
+      if (!userData) return;
+      await updateUserData(
+        userData.name,
+        userData.surname,
+        userData.email,
+        userData.password,
+        userData.uid,
+        typeof tokens === 'number' ? userData.tokens - tokens : userData.tokens
+      );
+      setUserData({
+        ...userData,
+        tokens:
+          typeof tokens === 'number'
+            ? userData.tokens - tokens
+            : userData.tokens,
+      });
     })();
   }, [hasFetched]);
   const onClick = () => {

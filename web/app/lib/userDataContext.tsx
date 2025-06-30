@@ -8,7 +8,8 @@ export interface userDataType {
   email: string;
   name: string;
   password: string;
-  surname: 'Błoński';
+  surname: string;
+  tokens: number;
 }
 
 export const userDataContext = createContext<

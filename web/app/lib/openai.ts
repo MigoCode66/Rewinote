@@ -39,8 +39,12 @@ export const createResponse = async (note: string) => {
         },
       ],
     });
+    console.log('OpenAI response:', response);
     // Adjust according to the actual OpenAI response structure
-    return response.output[0].content[0].text;
+    return [
+      response.output[0].content[0].text as string,
+      response.usage?.total_tokens as number,
+    ];
   } catch (err) {
     console.error('Error creating OpenAI response:', err);
   }

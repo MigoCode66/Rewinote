@@ -1,6 +1,7 @@
 'use client';
 import { useContext, useEffect, useRef } from 'react';
 import { noteContext } from '../lib/noteContext';
+import { userDataContext } from '../lib/userDataContext';
 const RewiewSelect = ({
   Display,
 }: {
@@ -15,12 +16,15 @@ const RewiewSelect = ({
   const [display, setDisplay] = Display;
   const selectRef = useRef<HTMLSelectElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const userDataContextValue = useContext(userDataContext);
+  const [userData, setUserData] = userDataContextValue ?? [null, () => {}];
   useEffect(() => {
     if (buttonRef.current) {
       buttonRef.current.disabled = true;
     }
   }, []);
   const onSelect = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+    if (userData?.tokens && userData.tokens < 1000) return;
     if (buttonRef.current) {
       // Check if  user selected somthig else than defult options and set notes current note
 
@@ -75,6 +79,7 @@ const RewiewSelect = ({
           })}
         </select>
       </div>
+
       <button
         className="ml-[9vw] mr-[9vw] w-[220px] pr-[20px] pl-[20px] h-[40px] bg-[#EEEEEE] outline-none rounded-[8px]  opacity-70 "
         ref={buttonRef}
@@ -82,6 +87,11 @@ const RewiewSelect = ({
       >
         Start rewiew
       </button>
+      {userData?.tokens && userData.tokens < 1000 ? (
+        <span className="text-red-500 text-[0.9rem] pl-[20px] ml-[7vw] ">
+          Reached maximum usage of review
+        </span>
+      ) : null}
     </div>
   );
 };

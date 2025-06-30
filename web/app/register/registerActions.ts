@@ -9,7 +9,7 @@ export async function createUser(
   surname: string,
   email: string,
   password: string,
-  uid: string
+  uid: string,
 ) {
   try {
     const docRef = doc(db, 'users', uid);
@@ -20,6 +20,7 @@ export async function createUser(
       password: password,
       admin: false,
       uid: uid,
+      tokens: 10000,
     });
     await createTokens(uid);
     redirect('/dashboard');
